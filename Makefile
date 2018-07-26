@@ -6,7 +6,8 @@ CFLAGS=-O3 -g
 all : libmmopp.so test
 
 
-gen.c : gen.py
+gen.c : wrapp.w
+	$(PYTHON) ./wrap/wrap.py -f -o gen.c $^
 	$(PYTHON) ./gen.py
 
 libmmopp.so : gen.c timer.c
