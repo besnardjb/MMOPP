@@ -94,7 +94,7 @@ void render_profile()
 
 }
 
-{{fnall foo MPI_Finalize}}
+{{fnall foo MPI_Finalize MPI_Init MPI_Init_thread}}
     ticks __begin = mmopp_getticks();
 
     {{callfn}}
@@ -107,6 +107,13 @@ void render_profile()
 {{endfnall}}
 
 {{fn foo MPI_Finalize}}
+  ticks_per_sec_end_cal();
   render_profile();
   {{callfn}}
+{{endfn}}
+
+
+{{fn foo MPI_Init MPI_Init_thread}}
+  {{callfn}}
+  ticks_per_sec_start_cal();
 {{endfn}}

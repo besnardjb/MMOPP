@@ -4,7 +4,7 @@ PYTHON=python
 
 CFLAGS=-O3 -g
 
-all : libmmopp.so libmmoppf.so test heat
+all : te he libmmopp.so libmmoppf.so test heat
 
 
 genf.c : wrapp.w
@@ -32,3 +32,12 @@ test : t.c libmmopp.so
 
 clean:
 	rm -fr libmmopp*.so test gen.c heat
+
+te : t.c 
+	$(MPICC) t.c $(CFLAGS) -o $@
+
+he : heat_mpi.f 
+	$(MPIF77) heat_mpi.f $(CFLAGS) -o $@
+
+
+
