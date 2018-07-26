@@ -3,15 +3,23 @@ PYTHON=python
 
 CFLAGS=-O3 -g
 
-all : libmmopp.so test
+all : libmmopp.so libmmoppf.so test
+
+
+genf.c : wrapp.w
+	$(PYTHON) ./wrap/wrap.py -f -o $@ $^
 
 
 gen.c : wrapp.w
-	$(PYTHON) ./wrap/wrap.py -f -o gen.c $^
-	$(PYTHON) ./gen.py
+	$(PYTHON) ./wrap/wrap.py -o $@ $^
 
 libmmopp.so : gen.c timer.c
-	$(MPICC) -Dconst="" --shared -o $@ -fpic $^ $(CFLAGS)
+	$(MPICC)  --shared -o $@ -fpic $^ $(CFLAGS)
+
+
+libmmoppf.so : genf.c timer.c
+	$(MPICC)  --shared -o $@ -fpic $^ $(CFLAGS)
+
 
 
 test : t.c libmmopp.so
@@ -19,4 +27,4 @@ test : t.c libmmopp.so
 
 
 clean:
-	rm -fr libmmopp.so test gen.c
+	rm -fr libmmopp*.so test gen.c
