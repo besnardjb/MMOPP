@@ -90,7 +90,7 @@ void render_profile()
             if( e->hits != 0)
             {
                 double duration = (double)e->ticks / ticks_per_sec();
-                fprintf( out, "\"%s\" : { \"hits\": %llu , \"time\": %g}\n", get_func_name(i), e->hits,  duration );
+                fprintf( out, "\"%s\" : { \"hits\": %llu , \"time\": %g},\n", get_func_name(i), e->hits,  duration );
                 mpi_time += duration;
             }
     
