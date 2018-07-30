@@ -22,7 +22,7 @@ double ticks_per_sec()
 static ticks start_ts = 0.0; 
 static ticks end_ts = 0.0; 
 
-struct timeval tv_start, tv_end;
+static struct timeval tv_start, tv_end;
 
 void ticks_per_sec_start_cal()
 {
@@ -49,4 +49,24 @@ void ticks_per_sec_end_cal()
 
 }
 
+double walltime_ticks()
+{
+	if( end_ts == 0.0) {
+		return -1.0;
+	}
 
+	return (double)(end_ts - start_ts);
+}
+
+
+double walltime()
+{
+	if( end_ts == 0.0) {
+		return -1.0;
+	}
+
+	double start_time = (tv_start.tv_usec) * 1.0e-06 + (tv_start.tv_sec) * 1.0;
+	double end_time = (tv_end.tv_usec) * 1.0e-06 + (tv_end.tv_sec) * 1.0;
+
+	return end_time - start_time;
+}

@@ -18,4 +18,7 @@ static inline ticks mmopp_getticks()
 	return getticks() - __compensation_ticks;
 }
 
+double walltime();
+double walltime_ticks();
+
 #endif /* end of include guard: TIMER_H */

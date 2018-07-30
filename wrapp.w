@@ -10,6 +10,10 @@
 
 #include "timer.h"
 
+
+#define MMOPP_STORAGE_VAR "/tmp"
+#define MMOPP_ALLOC_ENV_VAR "SLURM_JOB_ID"
+
 typedef enum
 {
 {{forallfn foo }}
@@ -61,7 +65,7 @@ void render_profile()
         PMPI_Reduce( MPI_IN_PLACE, __prof, MMOPP_FUNC_COUNT * 2, MPI_UNSIGNED_LONG_LONG, MPI_SUM, 0, MPI_COMM_WORLD );
     }
 
-    char * path = strdup("/tmp/lwprofXXXXXX");
+    char * path = strdup(MMOPP_STORAGE_VAR"/lwprofXXXXXX");
     int fd = mkstemp(path);
 
     if( fd < 0 )
@@ -77,16 +81,33 @@ void render_profile()
 
     fprintf( out, "{\n");
 
+    double mpi_time = 0.0;
+
     for( i = 0 ; i < MMOPP_FUNC_COUNT ; i++ )
     {
         struct MMOPP_prof_data * e = &__prof[ i ];
 
             if( e->hits != 0)
             {
-                fprintf( out, "\"%s\" : { \"hits\": %llu , \"time\": %g}\n", get_func_name(i), e->hits,  (double)e->ticks / ticks_per_sec() );
+                double duration = (double)e->ticks / ticks_per_sec();
+                fprintf( out, "\"%s\" : { \"hits\": %llu , \"time\": %g}\n", get_func_name(i), e->hits,  duration );
+                mpi_time += duration;
             }
     
     }
+
+    char * alloc_id = getenv(MMOPP_ALLOC_ENV_VAR);
+
+    if(!alloc_id)
+    {
+        alloc_id = "";
+    }
+
+    int comm_size;
+    PMPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+
+    fprintf( out, "\"metadata\" : { \"walltime\" : %g, \"walltime_ticks\" : %g, \"size\" : %d, \"alloc_id\" : \"%s\", \"mpi_time\" : %g, \"non_mpi\_time\" : %g}\n", walltime(), walltime_ticks(), comm_size, alloc_id, mpi_time , walltime()*comm_size - mpi_time);
+
 
     fprintf( out, "\n}\n");
 
