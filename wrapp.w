@@ -66,17 +66,28 @@ void render_profile()
         PMPI_Reduce( MPI_IN_PLACE, __prof, MMOPP_FUNC_COUNT * 2, MPI_UNSIGNED_LONG_LONG, MPI_SUM, 0, MPI_COMM_WORLD );
     }
 
-    char * path = strdup(MMOPP_STORAGE_VAR"/lwprofXXXXXX");
-    int fd = mkstemp(path);
+    char * path = NULL;
+    char * env_path = getenv("MMOPP_OUT");
 
-    if( fd < 0 )
+    FILE * out = NULL;
+
+    if( env_path )
+    {
+        path = env_path;
+        out = fopen(path, "w");
+    } else {
+        path = strdup(MMOPP_STORAGE_VAR"/lwprofXXXXXX");
+        int fd = mkstemp(path);
+        out = fdopen( fd, "w" );
+        free(path);
+    }
+
+    //fprintf(stderr, "Saving MMOPP profile in %s\n", path);
+
+    if(!out)
     {
         return;
     }
-
-    free(path);
-
-    FILE * out = fdopen( fd, "w" );
 
     int i;
 
