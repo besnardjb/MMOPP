@@ -31,7 +31,7 @@ test : t.c libmmopp.so
 
 
 clean:
-	rm -fr libmmopp*.so test gen.c heat
+	rm -fr libmmopp*.so test gen.c genf.c heat he te
 
 te : t.c 
 	$(MPICC) t.c $(CFLAGS) -o $@
