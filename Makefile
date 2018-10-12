@@ -2,6 +2,7 @@ MPICC=mpicc
 MPIF77=mpif77
 PYTHON=python
 LDFLAGS=-lpthread
+CFLAGS=-O3 -g -Wno-deprecated-declarations
 
 all : te he libmmopp.so libmmoppf.so test heat
 
