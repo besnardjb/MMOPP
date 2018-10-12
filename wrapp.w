@@ -107,7 +107,7 @@ void render_profile()
     int comm_size;
     PMPI_Comm_size(MPI_COMM_WORLD, &comm_size);
 
-    fprintf( out, "\"metadata\" : { \"walltime\" : %g, \"walltime_ticks\" : %g, \"size\" : %d, \"alloc_id\" : \"%s\", \"mpi_time\" : %g, \"non_mpi\_time\" : %g}\n", walltime(), walltime_ticks(), comm_size, alloc_id, mpi_time , walltime()*comm_size - mpi_time);
+    fprintf( out, "\"metadata\" : { \"walltime\" : %g, \"walltime_ticks\" : %g, \"size\" : %d, \"alloc_id\" : \"%s\", \"mpi_time\" : %g, \"non_mpi_time\" : %g}\n", walltime(), walltime_ticks(), comm_size, alloc_id, mpi_time , walltime()*comm_size - mpi_time);
 
 
     fprintf( out, "\n}\n");
