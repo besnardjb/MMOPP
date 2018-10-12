@@ -1,8 +1,7 @@
 MPICC=mpicc
 MPIF77=mpif77
 PYTHON=python
-
-CFLAGS=-O3 -g
+LDFLAGS=-lpthread
 
 all : te he libmmopp.so libmmoppf.so test heat
 
@@ -15,11 +14,11 @@ gen.c : wrapp.w
 	$(PYTHON) ./wrap/wrap.py -o $@ $^
 
 libmmopp.so : gen.c timer.c
-	$(MPICC)  --shared -o $@ -fpic $^ $(CFLAGS)
+	$(MPICC) $(LDFLAGS)  --shared -o $@ -fpic $^ $(CFLAGS)
 
 
 libmmoppf.so : genf.c timer.c
-	$(MPICC)  --shared -o $@ -fpic $^ $(CFLAGS)
+	$(MPICC) $(LDFLAGS)  --shared -o $@ -fpic $^ $(CFLAGS)
 
 
 heat : heat_mpi.f libmmoppf.so

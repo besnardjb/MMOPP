@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <mpi.h>
+#include <pthread.h>
 
 #include "timer.h"
 
@@ -115,6 +116,8 @@ void render_profile()
 
 }
 
+pthread_mutex_t profile_lock = PTHREAD_MUTEX_INITIALIZER;
+
 {{fnall foo MPI_Finalize MPI_Init MPI_Init_thread}}
     ticks __begin = mmopp_getticks();
 
@@ -122,9 +125,11 @@ void render_profile()
 
     ticks __end = mmopp_getticks();
 
+    pthread_mutex_lock(&profile_lock);
     struct MMOPP_prof_data * ___p = & __prof[ {{sub {{foo}} MPI_ MMOPP_MPI_}} ];
     ___p->hits++;
     ___p->ticks += __end - __begin;
+    pthread_mutex_unlock(&profile_lock);
 {{endfnall}}
 
 {{fn foo MPI_Finalize}}
