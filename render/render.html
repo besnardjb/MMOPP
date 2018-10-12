@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LDPL Report</title>
+
+<script language="javascript" type="text/javascript" src="./jquery.js"></script>
+<script language="javascript" type="text/javascript" src="./showdown.js"></script>
+<script language="javascript" type="text/javascript" src="./sorttable.js"></script>
+<script language="javascript" type="text/javascript" src="./profile.js"></script>
+<script language="javascript" type="text/javascript" src="diff.js"></script>
+<script language="javascript" type="text/javascript" src="file.js"></script>
+<script language="javascript" type="text/javascript" src="wall.js"></script>
+
+<style>
+
+body
+{
+	line-height: 1.6em;
+	background-color: #999;
+}
+
+
+
+.restableb
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	margin: 45px;
+	width: 480px;
+	text-align: left;
+	border-collapse: collapse;
+	border: 1px solid #69c;
+}
+.restableb th
+{
+	padding: 12px 17px 12px 17px;
+	font-weight: normal;
+	font-size: 14px;
+	color: #039;
+	border-bottom: 1px dashed #69c;
+}
+.restableb td
+{
+	padding: 7px 17px 7px 17px;
+	color: #669;
+}
+.restableb tbody tr:hover td
+{
+	color: #339;
+	background: #d0dafd;
+}
+
+.min
+{
+	background-color: #90EE90;
+}
+
+.max
+{
+	background-color: #FFC0CB;
+}
+
+.mid
+{
+	background-color: #ADD8E6;
+}
+
+#menu {
+   overflow:hidden;
+   color:#fff;
+   font-size: 200%;
+   width:350px;
+   -moz-border-radius: 9px 9px 9px 9px;
+   -webkit-border-radius: 9px 9px 9px 9px;
+   border-radius: 9px 9px 9px 9px;
+   box-shadow: 1px 1px 11px #330033;
+   background: #000055 no-repeat scroll 319px center;
+}
+
+
+
+#KDRAW
+{
+	width : 500px;
+	height : 500px;
+	border : 1px solid #aaa
+}
+
+.line_0
+{
+	background: #800000 !important;
+}
+
+
+.line_1
+{
+	background: #000080 !important;
+}
+
+
+.line_2
+{
+	background: #008000 !important;
+}
+
+
+.line_3
+{
+	background: #808000 !important;
+}
+
+.line_4
+{
+	background: #408080 !important;
+}
+
+.line_5
+{
+	background: #088080 !important;
+}
+
+.line_6
+{
+	background: #880111 !important;
+}
+
+.line_7
+{
+	background: #003000 !important;
+}
+
+.line_8
+{
+	background: #208080 !important;
+}
+
+.line_9
+{
+	background: #008010 !important;
+}
+
+.metadata
+{
+	background: #888;
+	color : #FFF !important;
+}
+
+.wide500
+{
+	min-width : 500px;
+}
+
+.consolecontent
+{
+	font-family: monospace;
+	font-size : 12px;
+	background: #000;
+	color: #00ffec !important;
+	padding-left : 10px !important;
+}
+
+
+
+
+table
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	margin: 45px;
+	width: 70%;
+	text-align: left;
+	border-collapse: collapse;
+	border: 1px solid #69c;
+}
+
+th
+{
+	padding: 12px 17px 12px 17px;
+	font-weight: normal;
+	font-size: 14px;
+	color: #039;
+	border-bottom: 1px dashed #69c;
+}
+
+td
+{
+	padding: 7px 17px 7px 17px;
+	color: #669;
+}
+
+tbody tr:hover td
+{
+	color: #339;
+	background: #d0dafd;
+}
+
+.content
+{
+	width: 70%;
+	margin: 0 auto;
+	background-color: #FFF;
+	padding: 50px;
+}
+
+</style>
+
+
+
+
+
+</head>
+
+
+
+<body>
+
+<div class="content">
+
+<h1>MMOPP Library GUI</h1>
+
+<select id='menu'>
+</select>
+
+
+<div id="file_man" class="panel">
+
+	<h3>Load New Profile</h3>
+	<div id="LOAD"><input id="fin" type=file></div>
+	<div id="LOADED"></div>
+
+</div>
+
+
+
+<div id="profiles" class="panel">
+	<div id="PROF"></div>
+</div>
+
+
+<div id="diff_prof" class="panel">
+	<div id="DIFF"></div>
+</div>
+
+<div id="walltimes" class="panel">
+	<div id="WTIMES"></div>
+</div>
+
+</div>
+
+</body>
+
+
+<script language="javascript" type="text/javascript">
+
+
+$(document).ready( function()
+{
+	$(".panel").hide();	
+	
+	var menu = [[ "Load and Manage" , "file_man"], [ "Execution Info" , "walltimes"], ["Profiles", "profiles"], ["Differential Profile","diff_prof"]];
+
+	var i;
+
+	for( i = 0 ; i < menu.length; i++)
+	{
+		$("#menu").append("<option value='" + menu[i][1] + "'>"+ menu[i][0] + "</option>");
+	}
+
+
+	$("#menu").change( function(){
+		
+		$(".panel").hide();	
+		var val = this.value;
+
+		$("#" + val ).fadeIn();
+	});
+
+	$("#file_man").fadeIn();
+		
+});
+
+</script>
+
+</html> 
